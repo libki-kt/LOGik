@@ -3,14 +3,24 @@
 Simple and customizable logging library for kotlin
 
 features:
-- [ ] Logger class
-- [ ] Logger singleton
+- [X] Logger class
+- [X] Logger singleton
+- [ ] Time format localization for ConsoleLoggingBehaviour
+- [ ] Logger handler
+- [ ] add `internal` modifier to stuff that shouldn't be accessible to a normal user
+
+Version: **1**
+
+*the library is mostly alpha, everything is annotated with the appropriate stability status
 
 = **0%**
 
+# THIS LIBRARY IS USING **MORDANT** -> https://github.com/ajalt/mordant, it's using apache 2.0 and you need to include a notice
+# THIS LIBRARY IS USING **KOTLINX.DATETIME** -> https://github.com/Kotlin/kotlinx-datetime, it's using apache 2.0 and you need to include a notice
+if you see any problem here then message me via matrix -> rebok@matrix.org
 
 platforms:
-- [ ] K/N linuxArm64 **[P]**
+- [ ] K/N linuxArm64 **[P]** *1
 - [ ] K/N linuxX64 **[P]**
 - [ ] K/N mingwX64 **[P]**
 - [ ] K/N linuxArm64 **[P]**
@@ -28,6 +38,7 @@ platforms:
 = **0%**
 
 **[P]** — planned as of right now
+*1 — partial support, blocked by another library
 
 WARNING!: kotlin native requires you to include
 https://kotlinlang.org/docs/native-binary-licenses.html
