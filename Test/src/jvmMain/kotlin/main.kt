@@ -8,14 +8,16 @@ fun main() {
         title = "Hello!",
         text = "hello",
         fromComponent = "test",
-        errorId = ErrorId("libki.test", "information/1")
+        fromPackage = "libki.test",
+        errorId = "information/1"
     )
 
     defaultLogger.log(
         title = "Hello!",
         text = "hello",
         fromComponent = "test",
-        errorId = ErrorId("libki.test", "information/1"),
+        fromPackage = "libki.test",
+        errorId = "information/1",
         logLevel = BasicLogLevel.Warning
     )
 
@@ -23,7 +25,8 @@ fun main() {
         title = "Hello!",
         text = "hello",
         fromComponent = "test",
-        errorId = ErrorId("libki.test", "information/1"),
+        fromPackage = "libki.test",
+        errorId = "information/1",
         logLevel = BasicLogLevel.Error
     )
 
@@ -31,8 +34,16 @@ fun main() {
         title = "Hello!",
         text = "hello",
         fromComponent = "test",
-        errorId = ErrorId("libki.test", "information/1"),
+        fromPackage = "libki.test",
+        errorId = "information/1",
         logLevel = BasicLogLevel.Critical
+    )
+
+    defaultLogger.log(
+        title = "hello",
+        text = "example",
+        fromComponent = "test",
+        fromPackage = "example"
     )
 
     try {
@@ -41,7 +52,8 @@ fun main() {
         defaultLogger.log(
             exception = e,
             fromComponent = "test",
-            errorId = ErrorId("libki.test", "testError/1")
+            fromPackage = "libki.test",
+            errorId = "testError/1"
         )
     }
 }

@@ -7,11 +7,13 @@ import org.duckdns.libki.LOGik.core.LogLevel
 import org.duckdns.libki.LOGik.core.Logger
 
 @StableFeature
-fun Logger.log(
+fun Logger<*>.log(
     exception: Exception,
     fromComponent: String,
-    errorId: ErrorId,
-    logLevel: LogLevel = BasicLogLevel.Critical
+    fromPackage: String,
+    errorId: String? = null,
+    logLevel: LogLevel = BasicLogLevel.Critical,
+    additionalData: Any = Unit
 ) {
     val messages: MutableList<Throwable> = mutableListOf()
 
@@ -23,6 +25,8 @@ fun Logger.log(
         ) { it.message.toString() },
         fromComponent = fromComponent,
         errorId = errorId,
-        logLevel = logLevel
+        fromPackage = fromPackage,
+        logLevel = logLevel,
+        additionalData = additionalData
     )
 }

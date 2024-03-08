@@ -95,19 +95,19 @@ object ConsoleLoggingBehaviour : LoggingBehaviour() {
                         })("\uE0B0")
             }" + logLevelString + "${
                 (TextColors.brightWhite on TextColors.gray(.2f))(
-                    " ${message.errorId.fromPackage} "
+                    " ${message.fromPackage} "
                 )
             }${(TextColors.gray(.2f) on TextColors.gray)("\uE0B0")}" +
                     "${
                         (TextColors.brightWhite on TextColors.gray)(
                             " ${message.fromComponent} "
                         )
-                    }${(TextColors.gray on TextColors.gray(.4f))("\uE0B0")}" +
+                    }${if (message.errorId != null) (TextColors.gray on TextColors.gray(.4f))("\uE0B0") else ""}" +
                     "${
-                        (TextColors.brightWhite on TextColors.gray(.4f))(
-                            " ${message.errorId.id} "
-                        )
-                    }${(TextColors.gray(.4f) on TextColors.magenta)("\uE0B0")}"
+                        if (message.errorId != null) (TextColors.brightWhite on TextColors.gray(.4f))(
+                            " ${message.errorId} "
+                        ) else ""
+                    }${((if (message.errorId != null) TextColors.gray(.4f) else TextColors.gray) on TextColors.magenta)("\uE0B0")}"
                     + "${
                 (TextColors.brightWhite on TextColors.magenta)(
                     " ${message.title} "

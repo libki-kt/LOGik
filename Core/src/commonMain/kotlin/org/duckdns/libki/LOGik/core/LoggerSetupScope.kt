@@ -1,8 +1,8 @@
 package org.duckdns.libki.LOGik.core
 
-import org.duckdns.libki.LOGik.annotations.NotCompleteFeature
+import org.duckdns.libki.LOGik.annotations.ExperimentalLOGikApi
 
-@NotCompleteFeature
+@ExperimentalLOGikApi
 class LoggerSetupScope {
     private val blockingRules: MutableList<BlockingRule> = mutableListOf()
     private val behaviour: MutableList<LoggingBehaviour> = mutableListOf()

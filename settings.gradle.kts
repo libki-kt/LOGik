@@ -9,6 +9,7 @@ include(":Behaviour:ConsoleLoggingBehaviour")
 //other
 include(":LogExceptions")
 include(":DefaultLogger")
+include("LoggerableGenerator")
 
 //test
 include(":Test")

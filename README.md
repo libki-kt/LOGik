@@ -6,18 +6,20 @@ features:
 - [X] Logger class
 - [X] Logger singleton
 - [ ] Time format localization for ConsoleLoggingBehaviour
-- [ ] Logger handler
-- [ ] add `internal` modifier to stuff that shouldn't be accessible to a normal user
+- [ ] Logger holders - allowing to pre-define logging information
+- [ ] Automatic loggerables(interfaces with logging functions) generation
+- [X] add `internal` modifier to stuff that shouldn't be accessible to a normal user
 
 Version: **1**
 
 *the library is mostly alpha, everything is annotated with the appropriate stability status
 
-= **0%**
+= **40%**
 
 # THIS LIBRARY IS USING **MORDANT** -> https://github.com/ajalt/mordant, it's using apache 2.0 and you need to include a notice
 # THIS LIBRARY IS USING **KOTLINX.DATETIME** -> https://github.com/Kotlin/kotlinx-datetime, it's using apache 2.0 and you need to include a notice
-if you see any problem here then message me via matrix -> rebok@matrix.org
+if you see any problem for ex.
+with licensing, or a security vulnerability, then message me via matrix -> rebok@matrix.org
 
 platforms:
 - [ ] K/N linuxArm64 **[P]** *1
@@ -34,7 +36,7 @@ platforms:
 - [ ] K/WASM WASI
 - [ ] Android
 
-= **0%**
+= **38,46%**
 
 **[P]** — planned as of right now
 *1 — partial support, blocked by another library

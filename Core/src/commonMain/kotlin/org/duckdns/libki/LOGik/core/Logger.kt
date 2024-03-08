@@ -2,14 +2,20 @@ package org.duckdns.libki.LOGik.core
 
 import kotlinx.datetime.Clock
 import org.duckdns.libki.LOGik.annotations.AlphaFeature
+import org.duckdns.libki.LOGik.annotations.ExperimentalLOGikApi
 
 @AlphaFeature
-abstract class Logger(
+abstract class Logger<holderType : LoggerHolder>(
     val defaultLogLevel: BasicLogLevelType = BasicLogLevel.Info
 ) {
     var blockingRulesList: MutableSet<BlockingRule> = mutableSetOf()
     var behaviourList: MutableSet<LoggingBehaviour> = mutableSetOf()
     private var isConfigured: Boolean = false
+
+    abstract fun getHolder(
+        forPackage: String,
+        component: String
+    ) : holderType
 
     fun log(
         message: LogMessage
@@ -43,19 +49,24 @@ abstract class Logger(
         title: String,
         text: String? = null,
         fromComponent: String,
-        errorId: ErrorId,
-        logLevel: LogLevel = defaultLogLevel
+        fromPackage: String,
+        errorId: String? = null,
+        logLevel: LogLevel = defaultLogLevel,
+        additionalData: Any = Unit
     ) {
         log(
             LogMessage(
-                title, text, fromComponent,
-                errorId, logLevel
+                title, text, errorId,
+                fromComponent, fromPackage,
+                logLevel, additionalData
             )
         )
     }
 
+    @OptIn(ExperimentalLOGikApi::class)
     abstract fun setup(scope: LoggerSetupScope)
 
+    @OptIn(ExperimentalLOGikApi::class)
     private fun configure() {
         if (!isConfigured) {
             isConfigured = true

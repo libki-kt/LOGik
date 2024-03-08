@@ -6,7 +6,9 @@ import org.duckdns.libki.LOGik.annotations.StableFeature
 open class LogMessage(
     val title: String,
     val text: String? = null,
+    val errorId: String? = null,
     val fromComponent: String,
-    val errorId: ErrorId,
-    val logLevel: LogLevel
+    val fromPackage: String,
+    val logLevel: LogLevel,
+    val additionalData: Any = Unit
 )
