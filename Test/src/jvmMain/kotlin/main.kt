@@ -1,9 +1,19 @@
-import org.duckdns.libki.LOGik.core.BasicLogLevel
-import org.duckdns.libki.LOGik.core.ErrorId
+import org.duckdns.libki.LOGik.core.LogLevel
 import org.duckdns.libki.LOGik.defaultLogger.defaultLogger
 import org.duckdns.libki.LOGik.logExceptions.log
 
-fun main() {
+suspend fun main() {
+    defaultLogger.awaitLaunch()
+
+    defaultLogger.log(
+        title = "Hello!",
+        text = "hello",
+        fromComponent = "test",
+        fromPackage = "libki.test",
+        errorId = "information/1",
+        logLevel = LogLevel.Debug
+    )
+
     defaultLogger.log(
         title = "Hello!",
         text = "hello",
@@ -18,7 +28,7 @@ fun main() {
         fromComponent = "test",
         fromPackage = "libki.test",
         errorId = "information/1",
-        logLevel = BasicLogLevel.Warning
+        logLevel = LogLevel.Warning
     )
 
     defaultLogger.log(
@@ -27,7 +37,7 @@ fun main() {
         fromComponent = "test",
         fromPackage = "libki.test",
         errorId = "information/1",
-        logLevel = BasicLogLevel.Error
+        logLevel = LogLevel.Error
     )
 
     defaultLogger.log(
@@ -36,7 +46,7 @@ fun main() {
         fromComponent = "test",
         fromPackage = "libki.test",
         errorId = "information/1",
-        logLevel = BasicLogLevel.Critical
+        logLevel = LogLevel.Critical
     )
 
     defaultLogger.log(

@@ -14,6 +14,8 @@ kotlin {
         mainRun {
             mainClass = "MainKt"
         }
+
+        jvmToolchain(20)
     }
 
     sourceSets {

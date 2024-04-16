@@ -1,73 +1,70 @@
 package org.duckdns.libki.LOGik.core
 
+import kotlinx.coroutines.*
 import kotlinx.datetime.Clock
 import org.duckdns.libki.LOGik.annotations.AlphaFeature
 import org.duckdns.libki.LOGik.annotations.ExperimentalLOGikApi
+import kotlin.coroutines.suspendCoroutine
+import kotlin.time.Duration.Companion.seconds
 
 @AlphaFeature
-abstract class Logger<holderType : LoggerHolder>(
-    val defaultLogLevel: BasicLogLevelType = BasicLogLevel.Info
+abstract class Logger(
+    val defaultLogLevel: LogLevel = LogLevel.Info
 ) {
     var blockingRulesList: MutableSet<BlockingRule> = mutableSetOf()
     var behaviourList: MutableSet<LoggingBehaviour> = mutableSetOf()
+    var isEnabled: Boolean = true
     private var isConfigured: Boolean = false
 
-    abstract fun getHolder(
-        forPackage: String,
-        component: String
-    ) : holderType
-
-    fun log(
-        message: LogMessage
-    ) {
-        val time = Clock.System.now().epochSeconds
-        configure()
-
-        val originalLogLevelCheck = blockingRulesList.map {
-            it.checkIsAccepted(
-                message = message
-            )
-        }.filter { it }.size == blockingRulesList.size
-
-        val defaultLogLevelCheck = if (message.logLevel.defaultLogLevelRepresentation != null) {
-            blockingRulesList.map {
-                it.checkIsAccepted(message)
-            }.filter { it }.size == blockingRulesList.size
-        } else true
-
-        if (
-            originalLogLevelCheck
-            && defaultLogLevelCheck
-        ) {
-            behaviourList.forEach {
-                it.log(message, time)
-            }
-        }
-    }
-
-    fun log(
+    suspend fun log(
         title: String,
         text: String? = null,
         fromComponent: String,
         fromPackage: String,
         errorId: String? = null,
-        logLevel: LogLevel = defaultLogLevel,
-        additionalData: Any = Unit
-    ) {
-        log(
-            LogMessage(
-                title, text, errorId,
-                fromComponent, fromPackage,
-                logLevel, additionalData
-            )
+        logLevel: LogLevel = defaultLogLevel
+    ) = coroutineScope {
+        if (!isEnabled) return@coroutineScope
+
+        val logMessage = LogMessage(
+            title = title,
+            text = text,
+            errorId = errorId,
+            fromComponent = fromComponent,
+            fromPackage = fromPackage,
+            logLevel = logLevel
         )
+
+        val isBlocked = blockingRulesList
+            .map { it.checkIsAccepted(logMessage) }
+            .size != blockingRulesList.size
+
+        if (isBlocked) return@coroutineScope
+
+        val currentTime = Clock.System.now().epochSeconds
+
+        behaviourList.forEach { behaviour ->
+            launch {
+                behaviour.log(logMessage, currentTime)
+            }
+        }
     }
 
     @OptIn(ExperimentalLOGikApi::class)
     abstract fun setup(scope: LoggerSetupScope)
 
+    init {
+        CoroutineScope(Dispatchers.Default).launch {
+            launch { delay(1.seconds); conf() }
+        }
+    }
+
+    suspend fun awaitLaunch() {
+        delay(2.seconds)
+    }
+
     @OptIn(ExperimentalLOGikApi::class)
-    private fun configure() {
+    private fun conf() {
         if (!isConfigured) {
             isConfigured = true
             val scope = LoggerSetupScope()

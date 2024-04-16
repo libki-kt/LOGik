@@ -9,7 +9,6 @@ include(":Behaviour:ConsoleLoggingBehaviour")
 //other
 include(":LogExceptions")
 include(":DefaultLogger")
-include("LoggerableGenerator")
 
 //test
 include(":Test")
@@ -46,6 +45,6 @@ pluginManagement {
 
 plugins {
     id("org.gradle.toolchains.foojay-resolver-convention") version "latest.release"
-    kotlin("multiplatform") version "1.9.22" apply false
-    kotlin("jvm") version "1.9.22" apply false
+    kotlin("multiplatform") version "1.9.23" apply false
+    kotlin("jvm") version "1.9.23" apply false
 }

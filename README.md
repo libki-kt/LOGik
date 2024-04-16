@@ -22,6 +22,7 @@ Version: **1**
 
 # THIS LIBRARY IS USING **MORDANT** → https://github.com/ajalt/mordant, it is using apache 2.0, and you need to include a notice
 # THIS LIBRARY IS USING **KOTLINX.DATETIME** → https://github.com/Kotlin/kotlinx-datetime, it is using apache 2.0, and you need to include a notice
+# THIS LIBRARY IS USING **KOTLINX.COROUTINES** -> https://github.com/Kotlin/kotlinx.coroutines, it is using apache 2.0 and you need to include a notice
 if you see any problem for ex.
 with licensing, or a security vulnerability, then message me via matrix → rebok@matrix.org.
 

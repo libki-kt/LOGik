@@ -7,6 +7,7 @@ import com.github.ajalt.mordant.rendering.TextStyle
 import kotlinx.datetime.*
 import org.duckdns.libki.LOGik.annotations.BetaFeature
 import org.duckdns.libki.LOGik.core.DefaultLogLevel
+import org.duckdns.libki.LOGik.core.LogLevel
 import org.duckdns.libki.LOGik.core.LogMessage
 import org.duckdns.libki.LOGik.core.LoggingBehaviour
 
@@ -14,42 +15,47 @@ import org.duckdns.libki.LOGik.core.LoggingBehaviour
 object ConsoleLoggingBehaviour : LoggingBehaviour() {
     override fun log(message: LogMessage, timestamp: Long) {
         //package -> component -> error id -> message
-        val defaultLogLevel = message.logLevel.defaultLogLevelRepresentation ?: DefaultLogLevel.Info
 
-        val logLevelString = when (defaultLogLevel) {
-            DefaultLogLevel.Info -> "${(TextColors.brightWhite on TextColors.blue)(" ${message.logLevel.name} ")}${
+        val logLevelString = when (message.logLevel) {
+            LogLevel.Info -> "${(TextColors.brightWhite on TextColors.blue)(" ${message.logLevel.name} ")}${
                 (TextColors.blue on TextColors.gray(.2f))(
                     "\uE0B0"
                 )
             }"
 
-            DefaultLogLevel.Error -> "${(TextColors.brightWhite on TextColors.rgb("#F28C28"))(" ${message.logLevel.name} ")}${
+            LogLevel.Error -> "${(TextColors.brightWhite on TextColors.rgb("#F28C28"))(" ${message.logLevel.name} ")}${
                 (TextColors.rgb("#F28C28") on TextColors.gray(.2f))(
                     "\uE0B0"
                 )
             }"
 
-            DefaultLogLevel.Warning -> "${(TextColors.brightWhite on TextColors.yellow)(" ${message.logLevel.name} ")}${
+            LogLevel.Warning -> "${(TextColors.brightWhite on TextColors.yellow)(" ${message.logLevel.name} ")}${
                 (TextColors.yellow on TextColors.gray(.2f))(
                     "\uE0B0"
                 )
             }"
 
-            DefaultLogLevel.Critical -> "${
+            LogLevel.Critical -> "${
                 (TextColors.brightWhite on TextColors.red)(
-                    " ${defaultLogLevel.name} "
+                    " Critical "
+                )
+            }${(TextColors.red on TextColors.gray(.2f))("\uE0B0")}"
+
+            LogLevel.Debug -> "${
+                (TextColors.brightWhite on TextColors.red)(
+                    " Critical "
                 )
             }${(TextColors.red on TextColors.gray(.2f))("\uE0B0")}"
         }
 
-        val textColorFunction: (String) -> String = when (defaultLogLevel) {
-            DefaultLogLevel.Info -> ({
+        val textColorFunction: (String) -> String = when (message.logLevel) {
+            LogLevel.Info -> ({
                 TextStyle(
                     color = TextColors.blue
                 )(it)
             })
 
-            DefaultLogLevel.Warning -> ({
+            LogLevel.Warning -> ({
                 TextStyle(
                     underline = true,
                     color = TextColors.yellow,
@@ -57,7 +63,7 @@ object ConsoleLoggingBehaviour : LoggingBehaviour() {
                 )(it)
             })
 
-            DefaultLogLevel.Error -> ({
+            LogLevel.Error -> ({
                 TextStyle(
                     underline = true,
                     color = Color.parse("#F28C28"),
@@ -65,7 +71,17 @@ object ConsoleLoggingBehaviour : LoggingBehaviour() {
                 )(it)
             })
 
-            DefaultLogLevel.Critical -> ({
+            LogLevel.Critical -> ({
+                TextStyle(
+                    color = TextColors.brightRed,
+                    bold = true,
+                    italic = true,
+                    underline = true,
+                    bgColor = TextColors.black
+                )(it)
+            })
+
+            LogLevel.Debug -> ({
                 TextStyle(
                     color = TextColors.brightRed,
                     bold = true,
@@ -87,11 +103,12 @@ object ConsoleLoggingBehaviour : LoggingBehaviour() {
         println(
             "${TextColors.green("\uE0B2")}${(TextColors.brightWhite on TextColors.green)(" $timeAsString ")}${
                 (TextColors.green on
-                        when (defaultLogLevel) {
-                            DefaultLogLevel.Error -> TextColors.rgb("#F28C28")
-                            DefaultLogLevel.Warning -> TextColors.yellow
-                            DefaultLogLevel.Critical -> TextColors.brightRed
-                            DefaultLogLevel.Info -> TextColors.blue
+                        when (message.logLevel) {
+                            LogLevel.Error -> TextColors.rgb("#F28C28")
+                            LogLevel.Warning -> TextColors.yellow
+                            LogLevel.Critical -> TextColors.brightRed
+                            LogLevel.Info -> TextColors.blue
+                            LogLevel.Debug -> TextColors.blue
                         })("\uE0B0")
             }" + logLevelString + "${
                 (TextColors.brightWhite on TextColors.gray(.2f))(
@@ -113,7 +130,7 @@ object ConsoleLoggingBehaviour : LoggingBehaviour() {
                     " ${message.title} "
                 )
             }${TextColors.magenta("\uE0B0")}"
-                    + (if (message.text != null) "\n" + message.text!!.split('\n')
+                    + (if (message.text != null) "\n" + (message.text?: "").split('\n')
                 .dropLastWhile { it.isBlank() }
                 .joinToString(
                     separator = "\n"

@@ -9,6 +9,5 @@ open class LogMessage(
     val errorId: String? = null,
     val fromComponent: String,
     val fromPackage: String,
-    val logLevel: LogLevel,
-    val additionalData: Any = Unit
+    val logLevel: LogLevel
 )

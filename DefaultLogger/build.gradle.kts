@@ -7,7 +7,9 @@ plugins {
 }
 
 kotlin {
-    jvm()
+    jvm {
+        jvmToolchain(20)
+    }
     js()
     linuxX64()
     mingwX64()
